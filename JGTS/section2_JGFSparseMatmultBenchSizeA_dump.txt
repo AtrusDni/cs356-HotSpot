@@ -1,5 +1,0 @@
-Java Grande Forum Thread Benchmark Suite
-Version 1.0 - Section 2 - Size A
-Executing on 2 threads
-
-Section2:SparseMatmult:Kernel:SizeA		0.225 (s) 	 	888.8889		 (Iterations/s)

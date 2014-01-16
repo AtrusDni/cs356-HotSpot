@@ -1,0 +1,6 @@
+Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 3 - Size A
+Executing on 2 threads
+
+Section3:RayTracer:Init:SizeA	0.003 (s) 	 21333.334	 (Objects/s)
+Section3:RayTracer:Run:SizeA	0.611 (s) 	 36824.88	 (Pixels/s)
+Section3:RayTracer:Total:SizeA	0.632 (s) 	 1.5822785	 (Solutions/s)

@@ -1,7 +1,0 @@
-The no of threads has not been specified, defaulting to 1
-  
-Java Grande Forum Thread Benchmark Suite
-Version 1.0 - Section 1
-Executing on 1 thread
-
-Section1:ForkJoin:Simple                	-6.4E7	 (forkjoins/s)
