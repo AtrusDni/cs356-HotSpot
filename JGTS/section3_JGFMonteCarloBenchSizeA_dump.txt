@@ -1,5 +1,0 @@
-Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 3 - Size A
-Executing on 2 threads
-
-Section3:MonteCarlo:Run:SizeA	1.196 (s) 	 8361.204	 (Samples/s)
-Section3:MonteCarlo:Total:SizeA	1.448 (s) 	 0.6906077	 (Solutions/s)

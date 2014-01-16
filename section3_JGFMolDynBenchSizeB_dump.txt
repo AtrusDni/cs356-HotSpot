@@ -1,5 +1,0 @@
-Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 3 - Size B
-Executing on 2 threads
-
-Section3:MolDyn:Run:SizeB	9.065 (s) 	 2973188.8	 (Interactions/s)
-Section3:MolDyn:Total:SizeB	9.127 (s) 	 0.10956503	 (Solutions/s)

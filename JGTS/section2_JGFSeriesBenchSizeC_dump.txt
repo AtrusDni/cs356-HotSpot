@@ -1,0 +1,82 @@
+Java Grande Forum Thread Benchmark Suite
+Version 1.0 - Section 2 - Size C
+Executing on 2 threads
+
+2014-01-09 22:10:57
+Full thread dump OpenJDK 64-Bit Server VM (24.45-b08 mixed mode):
+
+"Thread-0" prio=10 tid=0x00007f97540d9000 nid=0x1936 runnable [0x00007f973a004000]
+   java.lang.Thread.State: RUNNABLE
+	at series.SeriesRunner.TrapezoidIntegrate(SeriesTest.java:237)
+	at series.SeriesRunner.run(SeriesTest.java:170)
+	at java.lang.Thread.run(Thread.java:744)
+
+"Service Thread" daemon prio=10 tid=0x00007f97540a7800 nid=0x1934 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread1" daemon prio=10 tid=0x00007f97540a5800 nid=0x1933 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread0" daemon prio=10 tid=0x00007f97540a2800 nid=0x1932 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Signal Dispatcher" daemon prio=10 tid=0x00007f97540a0800 nid=0x1931 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Finalizer" daemon prio=10 tid=0x00007f975407e000 nid=0x1930 in Object.wait() [0x00007f973a60a000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x00000007d66054f8> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:135)
+	- locked <0x00000007d66054f8> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:151)
+	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:189)
+
+"Reference Handler" daemon prio=10 tid=0x00007f975407c000 nid=0x192f in Object.wait() [0x00007f973a70b000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x00000007d6605080> (a java.lang.ref.Reference$Lock)
+	at java.lang.Object.wait(Object.java:503)
+	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:133)
+	- locked <0x00000007d6605080> (a java.lang.ref.Reference$Lock)
+
+"main" prio=10 tid=0x00007f9754008800 nid=0x1927 in Object.wait() [0x00007f975b0a7000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x00000007d665e950> (a java.lang.Thread)
+	at java.lang.Thread.join(Thread.java:1280)
+	- locked <0x00000007d665e950> (a java.lang.Thread)
+	at java.lang.Thread.join(Thread.java:1354)
+	at series.SeriesTest.Do(SeriesTest.java:102)
+	at series.JGFSeriesBench.JGFkernel(JGFSeriesBench.java:45)
+	at series.JGFSeriesBench.JGFrun(JGFSeriesBench.java:85)
+	at JGFSeriesBenchSizeC.main(JGFSeriesBenchSizeC.java:42)
+
+"VM Thread" prio=10 tid=0x00007f9754078000 nid=0x192e runnable 
+
+"GC task thread#0 (ParallelGC)" prio=10 tid=0x00007f975401e000 nid=0x1928 runnable 
+
+"GC task thread#1 (ParallelGC)" prio=10 tid=0x00007f9754020000 nid=0x1929 runnable 
+
+"GC task thread#2 (ParallelGC)" prio=10 tid=0x00007f9754022000 nid=0x192a runnable 
+
+"GC task thread#3 (ParallelGC)" prio=10 tid=0x00007f9754023800 nid=0x192b runnable 
+
+"GC task thread#4 (ParallelGC)" prio=10 tid=0x00007f9754025800 nid=0x192c runnable 
+
+"GC task thread#5 (ParallelGC)" prio=10 tid=0x00007f9754027800 nid=0x192d runnable 
+
+"VM Periodic Task Thread" prio=10 tid=0x00007f97540b2800 nid=0x1935 waiting on condition 
+
+JNI global references: 108
+
+Heap
+ PSYoungGen      total 37888K, used 16280K [0x00000007d6600000, 0x00000007d9000000, 0x0000000800000000)
+  eden space 32768K, 49% used [0x00000007d6600000,0x00000007d75e6200,0x00000007d8600000)
+  from space 5120K, 0% used [0x00000007d8b00000,0x00000007d8b00000,0x00000007d9000000)
+  to   space 5120K, 0% used [0x00000007d8600000,0x00000007d8600000,0x00000007d8b00000)
+ ParOldGen       total 84992K, used 0K [0x0000000783200000, 0x0000000788500000, 0x00000007d6600000)
+  object space 84992K, 0% used [0x0000000783200000,0x0000000783200000,0x0000000788500000)
+ PSPermGen       total 21504K, used 2788K [0x0000000778c00000, 0x000000077a100000, 0x0000000783200000)
+  object space 21504K, 12% used [0x0000000778c00000,0x0000000778eb9240,0x000000077a100000)
+

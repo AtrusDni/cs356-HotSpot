@@ -21,8 +21,6 @@
 
 package jgfutil;
 
-
-
 import java.util.*;
 
 public class JGFInstrumentor{
