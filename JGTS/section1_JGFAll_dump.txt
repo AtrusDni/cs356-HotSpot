@@ -1,8 +1,0 @@
-Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 1
-Executing on 2 threads
-
-Section1:Barrier:Simple                 	98144.45	 (barriers/s)
-Section1:Barrier:Tournament             	2421949.0	 (barriers/s)
-Section1:ForkJoin:Simple                	11417.358	 (forkjoins/s)
-Section1:Sync:Method                    	4390610.0	 (synchronisations/s)
-Section1:Sync:Object                    	4935237.0	 (synchronisations/s)

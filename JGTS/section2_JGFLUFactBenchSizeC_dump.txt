@@ -1,4 +1,0 @@
-Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 2 - Size C
-Executing on 2 threads
-
-Section2:LUFact:Kernel:SizeC	3.49 (s) 	 1530.468	 (Mflops/s)

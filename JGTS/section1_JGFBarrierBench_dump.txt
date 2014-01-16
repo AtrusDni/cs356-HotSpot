@@ -1,3 +1,0 @@
-Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 1
-Executing on 2 threads
-

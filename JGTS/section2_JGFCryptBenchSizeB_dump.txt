@@ -1,4 +1,0 @@
-Java Grande Forum Thread Benchmark Suite - Version 1.0 - Section 2 - Size B
-Executing on 2 threads
-
-Section2:Crypt:Kernel:SizeB	0.451 (s) 	 88691.8	 (Kbyte/s)
