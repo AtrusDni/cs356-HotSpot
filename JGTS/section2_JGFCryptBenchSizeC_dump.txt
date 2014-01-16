@@ -1,0 +1,5 @@
+Java Grande Forum Thread Benchmark Suite
+Version 1.0 - Section 2 - Size C
+Executing on 2 threads
+
+Section2:Crypt:Kernel:SizeC		1.08 (s) 	 	92592.59	 	(Kbyte/s)

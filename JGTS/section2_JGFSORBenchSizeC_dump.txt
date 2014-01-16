@@ -1,0 +1,5 @@
+Java Grande Forum Thread Benchmark Suite
+Version 1.0 - Section 2 - Size C
+Executing on 2 threads
+
+Section2:SOR:Kernel:SizeC		1.226 (s) 	 	81.56607	 	(Iterations/s)

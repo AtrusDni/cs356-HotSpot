@@ -1,0 +1,9 @@
+Java Grande Forum Thread Benchmark Suite
+Version 1.0 - Section 2 - Size C
+Executing on 2 threads
+
+Validation failed
+
+ytotal = 749.5245870754868  1.1164047464262694E-10  2
+
+Section2:SparseMatmult:Kernel:SizeC		6.286 (s) 	 	31.816736	 (Iterations/s)
