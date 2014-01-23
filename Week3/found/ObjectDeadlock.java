@@ -1,5 +1,3 @@
-package objectdeadlock;
-
 import java.util.concurrent.TimeUnit;
 import java.lang.management.ThreadMXBean;
 import java.lang.management.ManagementFactory;

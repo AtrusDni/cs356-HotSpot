@@ -31,7 +31,6 @@ public class Deadl {
       public void run() {
         // Lock resource 1
         synchronized(resource1) {
-          System.out.println("Thread 1: locked resource 1");
 
           // Pause for a bit, simulating some file I/O or something.  
           // Basically, we just want to give the other thread a chance to
@@ -41,7 +40,6 @@ public class Deadl {
           
           // Now wait 'till we can get a lock on resource 2
           synchronized(resource2) {
-            System.out.println("Thread 1: locked resource 2");
           }
         }
       }
@@ -52,7 +50,6 @@ public class Deadl {
       public void run() {
         // This thread locks resource 2 right away
         synchronized(resource2) {
-          System.out.println("Thread 2: locked resource 2");
 
           // Then it pauses, for the same reason as the first thread does
           try { Thread.sleep(50); } catch (InterruptedException e) {}
@@ -63,7 +60,6 @@ public class Deadl {
           // release it 'till it gets resource1.  We're at an impasse. Neither
           // thread can run, and the program freezes up.
           synchronized(resource1) {
-            System.out.println("Thread 2: locked resource 1");
           }
         }
       }
@@ -74,12 +70,5 @@ public class Deadl {
     
     t1.start(); 
     t2.start();
-detectDeadlock();
   }
-  private static void detectDeadlock() {
-    ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
-    long[] threadIds = threadBean.findDeadlockedThreads();
-    int deadlockedThreads = threadIds != null? threadIds.length : 0;
-    System.out.println("Number of deadlocked threads: " + deadlockedThreads);
-}
 }
