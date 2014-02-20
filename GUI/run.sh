@@ -9,17 +9,6 @@ check_args() {
 	fi
 }
 
-test2 () {
-	case "$1" in
-		'/home/nicolas/cs356-HotSpot/gui/TestPrograms')
-			_test $1 $2
-			;;
-		*) echo "$1 is not a valid option"
-			exit
-			;;
-	esac
-}
-
 cleanall() {
 	rm -f $1/*.class
 	rm -f $1/*.txt

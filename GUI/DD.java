@@ -24,25 +24,25 @@ public class DD implements ActionListener {
     JLabel dlStatus;
     JLabel sleeper;
     JFrame frame;
-    JButton deadlock;
-    JButton loadFile;
-	String path, fName, fDir, s;
+    JButton deadlock, loadFile, close, exit;
+    String path, fName, fDir, s;
     Path currentRelativePath;
     Timer t;
 	Process p;
+	JPanel popup;
+	JPanel panel1, panel2, panel3, panel4;
     
     // runs gui
     DD() {
         
 		currentRelativePath = Paths.get("");
 		s = currentRelativePath.toAbsolutePath().toString();
-		path = "/home/nicolas/cs356-HotSpot/gui/";
 		
         // main frame
         frame = new JFrame("Java HotSpot GUI - Deadlock Detection");
-        frame.setSize(550, 275);
+        frame.setSize(600, 300);
         frame.setContentPane(new JLabel(new ImageIcon
-                (path+"/blue_background.jpg")));
+                (s+"/blue_background.jpg")));
         frame.getContentPane().setLayout(new FlowLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -96,27 +96,27 @@ public class DD implements ActionListener {
         greeting.setLayout(new GridBagLayout());
         
         // JLabel for welcome greeting
-        JLabel welcome = new JLabel("Welcome to Java HotSpot "
+        JLabel welcome = new JLabel("Java HotSpot "
                                   + "-- DeadLock Detection");
         welcome.setFont(welcome.getFont().deriveFont(20.2f));
         welcome.setForeground(Color.WHITE);
         greeting.add(welcome);
         
         // JPanel 1 (WEST <<)
-        JPanel panel1 = new JPanel();
+        panel1 = new JPanel();
         panel1.setPreferredSize(new Dimension(250, 250));
         panel1.setOpaque(false);
         panel1.setBorder(BorderFactory.createEmptyBorder());
         
         // JPanel 3 (combined with panel 1 to separate buttons)
-        JPanel panel3 = new JPanel();
+        panel3 = new JPanel();
         panel3.setPreferredSize(new Dimension(250, 250));
         panel3.setOpaque(false);
         panel3.setBorder(BorderFactory.createEmptyBorder());
         
         // JPanel 2 (EAST >>)
-        JPanel panel2 = new JPanel();
-        panel2.setPreferredSize(new Dimension(250, 250));
+        panel2 = new JPanel();
+        panel2.setPreferredSize(new Dimension(300, 250));
         panel2.setOpaque(false);
         panel2.setBorder(BorderFactory.createEmptyBorder());
         panel2.setLayout(new FlowLayout());
@@ -138,6 +138,15 @@ public class DD implements ActionListener {
         //frame.getContentPane().add(panel3, BorderLayout.SOUTH);
         frame.getContentPane().add(panel2, BorderLayout.EAST);
         
+	JPanel panel4 = new JPanel();
+        panel4.setPreferredSize(new Dimension(150, 150));
+        panel4.setOpaque(false);
+        panel4.setBorder(BorderFactory.createEmptyBorder());
+        panel4.setLayout(new FlowLayout());
+	close = new JButton("Close");
+	close.addActionListener(this);
+	panel4.add(close);
+	frame.add(panel4, BorderLayout.SOUTH);
         // set frame visibility
         frame.setVisible(true);
     }
@@ -173,6 +182,7 @@ public class DD implements ActionListener {
                     deadlock.setToolTipText("File loaded! Go ahead and use!");
                     deadlock.setEnabled(true);
                 }
+		sleeper.setText("<html><font color=#CE0000>Press Detection button and wait...</font></html>");
             }
             else {
                 status.setText("<html><font color=white><U>Java File Status</U>: Cancelled</font></html>");
@@ -186,14 +196,15 @@ public class DD implements ActionListener {
             
             dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>:</font> "
                             + "<font color=#F26C4F>In Progress...</font></html>");
+	    sleeper.setText("<html><font color=#CE0000>Please wait a few seconds...</font></html>");
+            sleeper.setFont(sleeper.getFont().deriveFont(16.0f));
+	    //t.schedule(new SleepForTask(), 5000); 
             //starts script
 			try {
                 //starts script
 				p = Runtime.getRuntime().exec(s + "/run.sh " + "compile " + fDir + " " + fName + " " + s);
 				System.out.println("Waiting...");
 				p.waitFor();
-				System.out.println("DONE!");
-				popup();
 			} catch (IOException ex) {
                 Logger.getLogger(DD.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
@@ -201,16 +212,18 @@ public class DD implements ActionListener {
             }
 			
             // set text to wait 10 seconds
-            sleeper.setText("<html><font color=#CE0000>Please wait a few seconds...</font></html>");
-            sleeper.setFont(sleeper.getFont().deriveFont(16.0f));
+		t = new Timer();
+            t.schedule(new SleepForTask(), 100); 
+       	System.out.println("DONE!");
             
             // sleep timer
-            //t = new Timer();
-			
-            //t.schedule(new SleepForTask(), 10000); 
+            
             // end sleep timer
             
         }
+	else if (ae.getActionCommand().equals("Close")) {
+		System.exit(0);
+	}
     }
     
     // for the pop up
@@ -237,9 +250,10 @@ public class DD implements ActionListener {
         
         // SCROLL PANE FOR TEXT AREA
         JScrollPane scroll = new JScrollPane(area);
-        scroll.setPreferredSize(new Dimension(500, 500));
+        scroll.setPreferredSize(new Dimension(650, 500));
 
-        JPanel popup = new JPanel();
+
+        popup = new JPanel();
         popup.add(scroll);
         
         int result = JOptionPane.showConfirmDialog(null, popup,
@@ -249,6 +263,9 @@ public class DD implements ActionListener {
             sleeper.setText("");
             dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>: </font>"
                             + "<font color=#8CC739>Ready!</font></html>");
+	    //sleeper.setText("<html><font color=#CE0000>cleaning directory...</font></html>");
+	    p = Runtime.getRuntime().exec(s + "/run.sh " + "clean " + s);
+	    //sleeper.setText("<html><font color=#CE0000>Ready!</font></html>");
         }
     }
     
