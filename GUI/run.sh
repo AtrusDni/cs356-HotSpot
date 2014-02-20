@@ -10,7 +10,7 @@ check_args() {
 }
 
 cleanall() {
-	rm -f $1/*.class
+	rm -f $1/$2*.class
 	rm -f $1/*.txt
 }
 
@@ -21,17 +21,17 @@ compile () {
 _test () {
 	rm -f $3/dump.txt
 	java -cp "$3" $2 2 >> $3/dump.txt &
+	pc=$!
+	jstack -l $pc | sed '/^/,/Found one/p' | wall
+	kill -3 $pc
 	sleep 1
-	kill -3 $!
-	sleep 1
-	kill -9 $!
-	wait $! 2>/dev/null
-	sleep 1
+	kill -9 $pc
+	wait $pc 2>/dev/null
 	grep -q 'Found' $3/dump.txt
 	if [ $? -eq 0 ]
 	then
 		echo "Found deadlocks! Displaying deadlocked thread info..."
-		sleep 2
+		#sleep 2
 		sed -n -e '/Found one/,/deadlock./w dump2.txt' $3/dump.txt
 	else
 		echo "Did not find deadlocks..."
@@ -47,7 +47,7 @@ case "$1" in
 		_test $2 $3 $4
 		;;
 	'clean')  echo  "Cleaning all"
-		cleanall $2
+		cleanall $2 $3
 		;;
 	*) echo "$1 is not a valid option"
 		exit

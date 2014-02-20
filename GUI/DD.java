@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JFileChooser;
 import java.awt.event.*;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.swing.text.html.HTMLDocument;
 
 // DUMP FILE MUST BE DUMP.TXT
 // DUMP.TXT MUST BE NEXT TO SRC FILE (NETBEANS)
@@ -25,18 +27,21 @@ public class DD implements ActionListener {
     JLabel sleeper;
     JFrame frame;
     JButton deadlock, loadFile, close, exit;
-    String path, fName, fDir, s;
+    String path, fName, fDir, s, line;
     Path currentRelativePath;
     Timer t;
-	Process p;
-	JPanel popup;
-	JPanel panel1, panel2, panel3, panel4;
+    Process p;
+    JPanel popup;
+    JPanel panel1, panel2, panel3, panel4;
+    
+    JEditorPane ep;
+    String linkToSource = "";
     
     // runs gui
     DD() {
         
-		currentRelativePath = Paths.get("");
-		s = currentRelativePath.toAbsolutePath().toString();
+	currentRelativePath = Paths.get("");
+	s = currentRelativePath.toAbsolutePath().toString();
 		
         // main frame
         frame = new JFrame("Java HotSpot GUI - Deadlock Detection");
@@ -147,6 +152,7 @@ public class DD implements ActionListener {
 	close.addActionListener(this);
 	panel4.add(close);
 	frame.add(panel4, BorderLayout.SOUTH);
+        
         // set frame visibility
         frame.setVisible(true);
     }
@@ -162,6 +168,7 @@ public class DD implements ActionListener {
             int returnVal = file.showOpenDialog(frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 f = file.getSelectedFile();
+                linkToSource = file.getSelectedFile().getAbsolutePath();
 				fName = file.getSelectedFile().getName();
 				fName = fName.replace(".java","");
 				System.out.println(fName);
@@ -171,6 +178,7 @@ public class DD implements ActionListener {
                                + f.getName() + " has been loaded</font></HTML>");
                     dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>: </font>"
                             + "<font color=#8CC739>Ready!</font></html>");
+                    sleeper.setText("<html><font color=#CE0000>Press Detection button and wait...</font></html>");
                     deadlock.setToolTipText("File loaded! Go ahead and use!");
                     deadlock.setEnabled(true);
                 }
@@ -179,15 +187,16 @@ public class DD implements ActionListener {
                                + f.getName() + " has been loaded</font></html>");
                     dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>: </font>"
                             + "<font color=#8CC739>Ready!</font></html>");
+                    sleeper.setText("<html><font color=#CE0000>Press Detection button and wait...</font></html>");
                     deadlock.setToolTipText("File loaded! Go ahead and use!");
                     deadlock.setEnabled(true);
                 }
-		sleeper.setText("<html><font color=#CE0000>Press Detection button and wait...</font></html>");
             }
             else {
                 status.setText("<html><font color=white><U>Java File Status</U>: Cancelled</font></html>");
                 dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>: "
                             + "File Cancelled</font></html>");
+                sleeper.setText("");
                 deadlock.setToolTipText("Load file first!");
                 deadlock.setEnabled(false);
             }
@@ -196,13 +205,13 @@ public class DD implements ActionListener {
             
             dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>:</font> "
                             + "<font color=#F26C4F>In Progress...</font></html>");
-	    sleeper.setText("<html><font color=#CE0000>Please wait a few seconds...</font></html>");
-            sleeper.setFont(sleeper.getFont().deriveFont(16.0f));
+            sleeper.setText("<html><font color=#CE0000>Press Detection button and wait...</font></html>");
 	    //t.schedule(new SleepForTask(), 5000); 
             //starts script
 			try {
                 //starts script
-				p = Runtime.getRuntime().exec(s + "/run.sh " + "compile " + fDir + " " + fName + " " + s);
+				line = s + "/run.sh " + "compile " + fDir + " " + fName + " " + s;
+				p = Runtime.getRuntime().exec(line);
 				System.out.println("Compiling...");
 				p.waitFor();
 				System.out.println("Finished compliling!");
@@ -213,7 +222,8 @@ public class DD implements ActionListener {
             }
 
 		try {
-				p = Runtime.getRuntime().exec(s + "/run.sh " + "runit " + fDir + " " + fName + " " + s);
+				line = s + "/run.sh " + "runit " + fDir + " " + fName + " " + s;
+				p = Runtime.getRuntime().exec(line);
 				System.out.println("Checking program for deadlocks...");
 				p.waitFor();
 				System.out.println("ALL DONE! Displaying results...");
@@ -244,24 +254,71 @@ public class DD implements ActionListener {
     // adjust size by setting the dimensions of the scroll pane
     public void popup() throws IOException {
         
+        // scrapped
         // JTEXTAREA
-        JTextArea area = new JTextArea();
-        area.setLineWrap(true);
-        area.setWrapStyleWord(true);
-        //area.setToolTipText("This is the dump file!");
-        area.setEditable(false);
+        //JTextArea area = new JTextArea();
+        //area.setLineWrap(true);
+        //area.setWrapStyleWord(true);
+        //area.setEditable(false);
+        // scrapped
 
+        // JEDITORPANE (HANDLES HTML)
+        ep = new JEditorPane();
+        ep.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+        ep.setEditable(false);
+        
+        // for Courier font bc of reasons
+        Font font = new Font("Courier New", Font.PLAIN, 14);
+        String bodyRule = "body { font-family: " + font.getFamily() + "; " +
+                "font-size: " + font.getSize() + "pt; }";
+        ((HTMLDocument)ep.getDocument()).getStyleSheet().addRule(bodyRule);
+        
+        // for hyperlinking
+        // replaces (library).java:(number) with the link to source code
+        // source code opens on desktop
+        ep.addHyperlinkListener(new HyperlinkListener() {
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                    if (Desktop.isDesktopSupported()) {
+                        try {
+                            File link = new File(linkToSource);
+                            Desktop.getDesktop().open(link);
+                        }
+                        catch (IOException ex) {
+                            // nothing needed here
+                        }
+                    }
+                }
+            }
+        });
+        
         // to read dump file
         // output to textarea
         File dumpFile = new File("dump2.txt");
-        Scanner readDump = new Scanner(dumpFile);
+        Scanner readDump = new Scanner(dumpFile); 
+        String appendAllDump = "";
         while(readDump.hasNext()) {
             String next = readDump.nextLine();
-            area.append(next + "\n");
+            String stacking = "";
+            int indexStart = next.indexOf(".java:");
+            if (indexStart != -1) {
+                for (int k = indexStart; k > 0; k--) {
+                    if (next.charAt(k) == '(') {
+                        indexStart = k + 1;
+                    }
+                }
+                for (int i = indexStart; i < next.length() - 1; i++) {
+                    stacking = stacking.concat(next.charAt(i) + "");
+                }
+                next = next.replaceAll(stacking, "<a href=\"" + linkToSource 
+                        + "\">" + stacking + "</a>");
+            }
+            appendAllDump = appendAllDump + next + "<br>";
         }
+        ep.setText(appendAllDump);
         
         // SCROLL PANE FOR TEXT AREA
-        JScrollPane scroll = new JScrollPane(area);
+        JScrollPane scroll = new JScrollPane(ep);
         scroll.setPreferredSize(new Dimension(650, 500));
 
 
@@ -275,8 +332,9 @@ public class DD implements ActionListener {
             sleeper.setText("");
             dlStatus.setText("<html><font color=white><U>DeadLock Detection</U>: </font>"
                             + "<font color=#8CC739>Ready!</font></html>");
+            sleeper.setText("<html><font color=#CE0000>Press Detection button and wait...</font></html>");
 	    //sleeper.setText("<html><font color=#CE0000>cleaning directory...</font></html>");
-	    p = Runtime.getRuntime().exec(s + "/run.sh " + "clean " + s);
+	    p = Runtime.getRuntime().exec(s + "/run.sh " + "clean " + s + " " + fName);
 	    //sleeper.setText("<html><font color=#CE0000>Ready!</font></html>");
         }
     }
