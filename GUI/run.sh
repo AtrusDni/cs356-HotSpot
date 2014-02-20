@@ -16,8 +16,6 @@ cleanall() {
 
 compile () {
 	javac -d "$3" /$1/$2.java
-	sleep 4
-	_test $1 $2 $3
 }
 
 _test () {
@@ -44,6 +42,9 @@ _test () {
 case "$1" in
 	'compile')  echo "Compiling all"
 		compile $2 $3 $4
+		;;
+	'runit')  echo "Running..."
+		_test $2 $3 $4
 		;;
 	'clean')  echo  "Cleaning all"
 		cleanall $2

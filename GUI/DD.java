@@ -203,8 +203,20 @@ public class DD implements ActionListener {
 			try {
                 //starts script
 				p = Runtime.getRuntime().exec(s + "/run.sh " + "compile " + fDir + " " + fName + " " + s);
-				System.out.println("Waiting...");
+				System.out.println("Compiling...");
 				p.waitFor();
+				System.out.println("Finished compliling!");
+			} catch (IOException ex) {
+                Logger.getLogger(DD.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DD.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+		try {
+				p = Runtime.getRuntime().exec(s + "/run.sh " + "runit " + fDir + " " + fName + " " + s);
+				System.out.println("Checking program for deadlocks...");
+				p.waitFor();
+				System.out.println("ALL DONE! Displaying results...");
 			} catch (IOException ex) {
                 Logger.getLogger(DD.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
